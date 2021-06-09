@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Challenge 30</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p data-js="company-name"></p>
+      <p data-js="company-phone"></p>
+    </header>
+
+    <main>
+      <div class="formContainer">
+        <h2>Cadastre um novo carro</h2>
+        <form  data-js="form">
+        <input type="text" name="modelo" data-js="input-model" placeholder="Modelo">
+        <input type="number" name="ano" data-js="input-year" placeholder="Ano do carro">
+        <input type="text" name="cor" data-js="input-color" placeholder="Cor Carro">
+        <input type="text" name="placa" data-js="input-plate" placeholder="Placa do carro">
+        <input type="text" name="imagem" data-js="input-url" placeholder="URL da imagem do carro">
+        <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+    
+
+    <table data-js="cars" cellspacing="0" >
+      <tr>
+        <th>Modelo</th>
+        <th>Ano</th>
+        <th>Cor</th>
+        <th>Placa</th>
+        <th>Imagem</th>
+      </tr>
+    </table>
+
+  </main>
+
+  </div>
+  <script src="./dom.js"></script>
+  <script src="./index.js"></script>
+</body>
+</html>
