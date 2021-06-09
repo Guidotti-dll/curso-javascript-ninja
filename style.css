@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container header {
+  width: 100%;
+  padding: 0 20px;
+  height: 50px;
+  background-color: #3f3f3f;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container main {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 30px;
+}
+
+.container main form {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  margin: 35px 0;
+}
+
+.container main form input {
+  height: 35px;
+  padding: 5px;
+  margin: 5px 0;
+}
+
+.container main form button {
+  margin-top: 10px;
+  height: 35px;
+  background-color: #3f3f3f;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.container main form button:hover {
+  background-color: #5f5f5f;
+}
+
+.container main table {
+  width: 60%;
+}
+
+.container main table tr th {
+  font-size: 18px;
+  color: #3f3f3f;
+}
+
+.container main table tr td {
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+.container main table tr img {
+  width: 150px;
+  padding: 10px;
+}
