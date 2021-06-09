@@ -1,3 +1,3 @@
 # curso-javascript-ninja
 
-# Challenge 30
+# Challenge 31
