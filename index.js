@@ -1,27 +1,14 @@
-(function (DOM) {
+(function (DOM, document) {
   'use strict';
 
 /*
-A loja de carros será nosso desafio final. Na aula anterior, você fez a parte
-do cadastro dos carros. Agora nós vamos começar a deixar ele com cara de
-projeto mesmo.
-Crie um novo repositório na sua conta do GitHub, com o nome do seu projeto.
-Na hora de criar, o GitHub te dá a opção de criar o repositório com um
-README. Use essa opção.
-Após criar o repositório, clone ele na sua máquina.
-Crie uma nova branch chamada `challenge-30`, e copie tudo o que foi feito no
-desafio da aula anterior para esse novo repositório, nessa branch
-`challenge-30`.
-Adicione um arquivo na raiz desse novo repositório chamado `.gitignore`.
-O conteúdo desse arquivo deve ser somente as duas linhas abaixo:
-node_modules
-npm-debug.log
-Faça as melhorias que você achar que são necessárias no seu código, removendo
-duplicações, deixando-o o mais legível possível, e então suba essa alteração
-para o repositório do seu projeto.
-Envie um pull request da branch `challenge-30` para a `master` e cole aqui
-nesse arquivo, dentro do `console.log`, o link para o pull request no seu
-projeto.
+Agora vamos criar a funcionalidade de "remover" um carro. Adicione uma nova
+coluna na tabela, com um botão de remover.
+Ao clicar nesse botão, a linha da tabela deve ser removida.
+Faça um pull request no seu repositório, na branch `challenge-31`, e cole
+o link do pull request no `console.log` abaixo.
+Faça um pull request, também com a branch `challenge-31`, mas no repositório
+do curso, para colar o link do pull request do seu repo.
 */
 
     const app = (function() {
@@ -72,20 +59,35 @@ projeto.
         createNewCar: function createNewCar (inputs) {
           const $fragment =  document.createDocumentFragment();
           const $tr =  document.createElement('tr');
-
           inputs.forEach((input)=>{
-          const $td = document.createElement('td')
+          const $td = document.createElement('td');
           if(input.name === 'imagem'){
             const $carImage = document.createElement('img');
-            $carImage.src = input.value
+            $carImage.src = input.value;
             $td.appendChild($carImage);
           }else{
-            $td.textContent = input.value
+            $td.textContent = input.value;
           }
-          $tr.appendChild($td)
+          $tr.appendChild($td);
         })
-
+        $tr.appendChild(app.addRemoveButton());
         return $fragment.appendChild($tr)
+        },
+
+        addRemoveButton: function addRemoveButton() {
+          const $td = document.createElement('td')
+          const $removeButton = document.createElement('button')
+          $removeButton.setAttribute('type', 'button'); 
+          $removeButton.textContent = 'Remover'; 
+          $removeButton.addEventListener('click', app.removeCar);
+          $td.appendChild($removeButton);
+          return $td;
+        },
+
+        removeCar: function removeCar() {
+          //this referenciando o próprio botão
+          const $removedCar = this.parentNode.parentNode;
+          $removedCar.parentNode.removeChild($removedCar);
         },
 
         clearInputs: function clearInputs(inputs) {
@@ -106,10 +108,8 @@ projeto.
           if (!app.isReady.call(this)) 
             return;
           const data = JSON.parse(this.responseText);
-          
           const $companyName =  DOM('[data-js="company-name"]').get();
           const $companyPhone =  DOM('[data-js="company-phone"]').get();
-
           $companyName.textContent = data.name;
           $companyPhone.textContent = data.phone;
         },
@@ -121,4 +121,4 @@ projeto.
     }())
 
     app.init()
-})(window.DOM);
+})(window.DOM,document);
