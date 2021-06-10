@@ -19,4 +19,14 @@ router.post('/', function (req, res) {
   res.json({ message: 'success' })
 })
 
+router.delete('/:plate', function (req, res) {
+  const {plate} = req.params;
+
+  const carIndex = data.findIndex(car => car.plate === plate);
+
+  data.splice(carIndex, 1);
+  
+  res.json({ message: 'success' })
+});
+
 module.exports = router

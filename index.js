@@ -156,6 +156,16 @@ do pull request.
         removeCar: function removeCar() {
           //this referenciando o próprio botão
           const $removedCar = this.parentNode.parentNode;
+          if(online){
+            const plate = $removedCar.children[2].textContent
+            ajax.open('DELETE', `http://localhost:3000/car/${plate}`);
+            ajax.send();
+            ajax.onreadystatechange = function () {
+            if(app.isReady.call(this)){
+              console.log(ajax.responseText)
+            }
+          }
+          }
           $removedCar.parentNode.removeChild($removedCar);
         },
 
