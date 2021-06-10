@@ -79,7 +79,7 @@ do pull request.
           var car = app.getInputsValues(inputs);
           ajax.open('POST', 'http://localhost:3000/car');
           ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          ajax.send(`image=${car.image}&brandModel=${car.brandModel}&year=${car.plate}&plate=${car.plate}&color=${car.color}`);
+          ajax.send(`image=${car.image}&brandModel=${car.brandModel}&year=${car.year}&plate=${car.plate}&color=${car.color}`);
           ajax.onreadystatechange = function () {
             if(ajax.readyState === 4){
               console.log(ajax.responseText);
