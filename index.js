@@ -43,7 +43,6 @@ do pull request.
 
         handleSubmit: function handleSubmit (e) {
           e.preventDefault();
-          // app.postCar();
           const $inputs = DOM('input').element;
           const $cars = DOM('[data-js="cars"]').get();
           if (!app.hasFieldEmpty($inputs)) {
@@ -59,31 +58,64 @@ do pull request.
           app.clearInputs($inputs);
         },
 
-        showMessage: function showMessage(inputs) {
-          const emptyFields = []
-          inputs.forEach((item) => {
-            if (item.value === '') {
-              emptyFields.push(item.placeholder)
+        getCars: function getCars() {
+          // const ajax = new XMLHttpRequest();
+          ajax.open('GET', 'http://localhost:3000/car');
+          ajax.send();
+          ajax.onreadystatechange = function () {
+            if(app.isReady.call(this)){
+              online = true;
+              const response = JSON.parse(ajax.responseText);
+              app.createNewCar(response);
+            }else{
+              online = false;
+              // alert('O servidor não esta no ar!! Todos os carros que voce cadastrar agora iram sumir após recarregar a pagina!! Ligue o servidor para uma melhor experiência!');
             }
-          })
-          alert(`Você deve preencher os seguintes campos: ${emptyFields.slice(0,- 1).join(', ')} e ${emptyFields.slice(-1)}`);
+          }
         },
 
-        hasFieldEmpty: function hasFieldEmpty(inputs) {
-          let result = true;
-          inputs.forEach((item) => {
-            result = true;
-            if (item.value === '') {
-              result = false;
+        postCar: function postCar(inputs) {
+          // const ajax = new XMLHttpRequest();
+          var car = app.getInputsValues(inputs);
+          ajax.open('POST', 'http://localhost:3000/car');
+          ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          ajax.send(`image=${car.image}&brandModel=${car.brandModel}&year=${car.plate}&plate=${car.plate}&color=${car.color}`);
+          ajax.onreadystatechange = function () {
+            if(ajax.readyState === 4){
+              console.log(ajax.responseText);
+              app.getCars();
             }
-          })
-          return(result);
+          }
         },
-
 
         createNewCar: function createNewCar (inputs) {
           if(online){
-            const $cars = DOM('[data-js="cars"]').get();
+            app.createNewCarOnline(inputs)
+          }else{
+          return app.createNewCarOffline(inputs)
+          }
+        },
+
+        createNewCarOffline: function createNewCarOffline(inputs) {
+          const $fragment =  document.createDocumentFragment();
+          const $tr =  document.createElement('tr');
+          inputs.forEach((input)=>{
+            const $td = document.createElement('td');
+            if(input.name === 'imagem'){
+              const $carImage = document.createElement('img');
+              $carImage.src = input.value;
+              $td.appendChild($carImage);
+            }else{
+              $td.textContent = input.value;
+            }        
+            $tr.appendChild($td);
+          })
+          $tr.appendChild(app.addRemoveButton());
+          return $fragment.appendChild($tr)
+        },
+
+        createNewCarOnline: function createNewCarOnline(inputs) {
+          const $cars = DOM('[data-js="cars"]').get();
               $cars.innerHTML = `
               <tr>
                 <td>Modelo</td>
@@ -109,23 +141,6 @@ do pull request.
               index !== 0 ?
               tr.appendChild(app.addRemoveButton())
               : null });
-          }else{
-            const $fragment =  document.createDocumentFragment();
-            const $tr =  document.createElement('tr');
-            inputs.forEach((input)=>{
-              const $td = document.createElement('td');
-              if(input.name === 'imagem'){
-                const $carImage = document.createElement('img');
-                $carImage.src = input.value;
-                $td.appendChild($carImage);
-              }else{
-                $td.textContent = input.value;
-              }        
-              $tr.appendChild($td);
-            })
-            $tr.appendChild(app.addRemoveButton());
-            return $fragment.appendChild($tr)
-          }
         },
 
         addRemoveButton: function addRemoveButton() {
@@ -158,6 +173,27 @@ do pull request.
           })
         },
 
+        showMessage: function showMessage(inputs) {
+          const emptyFields = []
+          inputs.forEach((item) => {
+            if (item.value === '') {
+              emptyFields.push(item.placeholder)
+            }
+          })
+          alert(`Você deve preencher os seguintes campos: ${emptyFields.slice(0,- 1).join(', ')} e ${emptyFields.slice(-1)}`);
+        },
+
+        hasFieldEmpty: function hasFieldEmpty(inputs) {
+          let result = true;
+          inputs.forEach((item) => {
+            result = true;
+            if (item.value === '') {
+              result = false;
+            }
+          })
+          return(result);
+        },
+
         companyInfo: function companyInfo () {
           const ajax = new XMLHttpRequest();
           ajax.open('GET', './company.json');
@@ -178,36 +214,6 @@ do pull request.
 
         isReady: function isReady() {
           return this.readyState === 4 && this.status === 200;
-        },
-
-        getCars: function getCars() {
-          // const ajax = new XMLHttpRequest();
-          ajax.open('GET', 'http://localhost:3000/car');
-          ajax.send();
-          ajax.onreadystatechange = function () {
-            if(app.isReady.call(this)){
-              online = true;
-              const response = JSON.parse(ajax.responseText);
-              app.createNewCar(response);
-            }else{
-              online = false;
-              // alert('O servidor não esta no ar!! Todos os carros que voce cadastrar agora iram sumir após recarregar a pagina!! Ligue o servidor para uma melhor experiência!');
-            }
-          }
-        },
-
-        postCar: function postCar(inputs) {
-          // const ajax = new XMLHttpRequest();
-          var car = app.getInputsValues(inputs);
-          ajax.open('POST', 'http://localhost:3000/car');
-          ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          ajax.send(`image=${car.image}&brandModel=${car.brandModel}&year=${car.plate}&plate=${car.plate}&color=${car.color}`);
-          ajax.onreadystatechange = function () {
-            if(ajax.readyState === 4){
-              console.log(ajax.responseText);
-              app.getCars();
-            }
-          }
         },
       }
 
