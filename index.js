@@ -59,7 +59,7 @@ do pull request.
         },
 
         getCars: function getCars() {
-          // const ajax = new XMLHttpRequest();
+          const ajax = new XMLHttpRequest();
           ajax.open('GET', 'http://localhost:3000/car');
           ajax.send();
           ajax.onreadystatechange = function () {
@@ -67,10 +67,25 @@ do pull request.
               online = true;
               const response = JSON.parse(ajax.responseText);
               app.createNewCar(response);
-            }else{
+            }
+            if(  ajax.readyState === 4 &&  ajax.status === 404){
               online = false;
               alert('O servidor não esta no ar!! Todos os carros que voce cadastrar agora iram sumir após recarregar a pagina!! Ligue o servidor para uma melhor experiência!');
             }
+          // try {
+          //   debugger;
+          //   ajax.open('GET', 'http://localhost:3000/car');
+          //   ajax.send();
+          //   ajax.onreadystatechange = function () {
+          //     if(app.isReady.call(this)){
+          //           online = true;
+          //           const response = JSON.parse(ajax.responseText);
+          //           app.createNewCar(response);
+          //         }
+          //   }
+          // } catch (error) {
+          //   online = false;
+          //   alert('O servidor não esta no ar!! Todos os carros que voce cadastrar agora iram sumir após recarregar a pagina!! Ligue o servidor para uma melhor experiência!');
           }
         },
 
