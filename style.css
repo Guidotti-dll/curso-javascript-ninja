@@ -62,6 +62,10 @@ button:hover {
   width: 60%;
 }
 
+.container main table tbody:first-child {
+  font-weight: bold;
+}
+
 .container main table tr th {
   font-size: 18px;
   color: #3f3f3f;
