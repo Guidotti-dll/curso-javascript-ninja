@@ -199,6 +199,7 @@ do pull request.
           const $companyPhone =  DOM('[data-js="company-phone"]').get();
           $companyName.textContent = data.name;
           $companyPhone.textContent = data.phone;
+          document.title = data.name;
         },
 
         isReady: function isReady() {
