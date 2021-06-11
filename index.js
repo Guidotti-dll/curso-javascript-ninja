@@ -49,11 +49,7 @@ do pull request.
             return;
           }
 
-          if (online) {
-            app.postCar($inputs);
-          }else{
-            $cars.appendChild(app.createNewCar($inputs))
-          }
+          app.createNewCar([app.getInputsValues($inputs)])
           app.clearInputs($inputs);
         },
 
@@ -88,32 +84,6 @@ do pull request.
         },
 
         createNewCar: function createNewCar (inputs) {
-          if(online){
-            app.createNewCarOnline(inputs)
-          }else{
-          return app.createNewCarOffline(inputs)
-          }
-        },
-
-        createNewCarOffline: function createNewCarOffline(inputs) {
-          const $fragment =  document.createDocumentFragment();
-          const $tr =  document.createElement('tr');
-          inputs.forEach((input)=>{
-            const $td = document.createElement('td');
-            if(input.name === 'image'){
-              const $carImage = document.createElement('img');
-              $carImage.src = input.value;
-              $td.appendChild($carImage);
-            }else{
-              $td.textContent = input.value;
-            }        
-            $tr.appendChild($td);
-          })
-          $tr.appendChild(app.addRemoveButton());
-          return $fragment.appendChild($tr)
-        },
-
-        createNewCarOnline: function createNewCarOnline(inputs) {
           const $cars = DOM('[data-js="cars"]').get();
               $cars.innerHTML = `
               <tr>
