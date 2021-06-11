@@ -43,13 +43,18 @@ do pull request.
         handleSubmit: function handleSubmit (e) {
           e.preventDefault();
           const $inputs = DOM('input').element;
-          const $cars = DOM('[data-js="cars"]').get();
           if (!app.hasFieldEmpty($inputs)) {
             app.showMessage($inputs);
             return;
           }
 
-          app.createNewCar([app.getInputsValues($inputs)])
+          if (online) {
+            app.postCar($inputs);
+          }else {
+            cars.push(app.getInputsValues($inputs));
+            app.createNewCar(cars)
+          }
+          
           app.clearInputs($inputs);
         },
 
@@ -71,12 +76,13 @@ do pull request.
           )},
 
         postCar: function postCar(inputs) {
+          const ajax = new XMLHttpRequest();
           var car = app.getInputsValues(inputs);
           ajax.open('POST', 'http://localhost:3000/car');
           ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
           ajax.send(`image=${car.image}&brandModel=${car.brandModel}&year=${car.year}&plate=${car.plate}&color=${car.color}`);
           ajax.onreadystatechange = function () {
-            if(ajax.readyState === 4){
+            if(app.isReady.call(this)){
               console.log(ajax.responseText);
               app.getCars();
             }
@@ -88,7 +94,7 @@ do pull request.
               $cars.innerHTML = `
               <tr>
                 <td>Modelo</td>
-                <td>ano</td>
+                <td>Ano</td>
                 <td>Placa</td>
                 <td>Cor</td>
                 <td>Imagem</td>
@@ -125,8 +131,9 @@ do pull request.
         removeCar: function removeCar() {
           //this referenciando o próprio botão
           const $removedCar = this.parentNode.parentNode;
+          const plate = $removedCar.children[2].textContent
           if(online){
-            const plate = $removedCar.children[2].textContent
+            const ajax = new XMLHttpRequest();
             ajax.open('DELETE', `http://localhost:3000/car/${plate}`);
             ajax.send();
             ajax.onreadystatechange = function () {
@@ -134,6 +141,9 @@ do pull request.
                 console.log(ajax.responseText)
               }
             }
+          }else {
+            const carIndex = cars.findIndex(car => car.plate === plate);
+            cars.splice(carIndex, 1);
           }
           $removedCar.parentNode.removeChild($removedCar);
         },
@@ -199,6 +209,7 @@ do pull request.
     }())
     const ajax = new XMLHttpRequest();
     let online = false;
+    let cars = [];
 
     app.init();
 })(window.DOM,document);
