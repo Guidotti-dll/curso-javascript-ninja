@@ -69,7 +69,7 @@ do pull request.
               app.createNewCar(response);
             }else{
               online = false;
-              // alert('O servidor não esta no ar!! Todos os carros que voce cadastrar agora iram sumir após recarregar a pagina!! Ligue o servidor para uma melhor experiência!');
+              alert('O servidor não esta no ar!! Todos os carros que voce cadastrar agora iram sumir após recarregar a pagina!! Ligue o servidor para uma melhor experiência!');
             }
           }
         },
@@ -101,7 +101,7 @@ do pull request.
           const $tr =  document.createElement('tr');
           inputs.forEach((input)=>{
             const $td = document.createElement('td');
-            if(input.name === 'imagem'){
+            if(input.name === 'image'){
               const $carImage = document.createElement('img');
               $carImage.src = input.value;
               $td.appendChild($carImage);
@@ -161,10 +161,10 @@ do pull request.
             ajax.open('DELETE', `http://localhost:3000/car/${plate}`);
             ajax.send();
             ajax.onreadystatechange = function () {
-            if(app.isReady.call(this)){
-              console.log(ajax.responseText)
+              if(app.isReady.call(this)){
+                console.log(ajax.responseText)
+              }
             }
-          }
           }
           $removedCar.parentNode.removeChild($removedCar);
         },
